@@ -36,7 +36,8 @@ public class Main {
                 }
             }
             switch (option) {
-                case 1, 2 -> System.out.println();
+                case 1 -> deposit(balance, scanner);
+                case 2 -> System.out.println();
                 case 3 -> {
                     System.out.println("=== Account Balance ===");
                     System.out.println("Account Holder: " + name);
@@ -49,7 +50,27 @@ public class Main {
 
             }
         }
-
         scanner.close();
+    }
+    public static void deposit(double balance, Scanner scanner) {
+        System.out.println("Enter amount to deposit: £");
+        boolean validAmount = false;
+        double amount = 0.00;
+        while (!validAmount) {
+            try {
+                amount = Double.parseDouble(scanner.nextLine());
+                if (amount < 0) {
+                    System.out.println("Amount deposited cannot be negative! Please try again: £");
+                } else {
+                    validAmount = true;
+                }
+            } catch (NumberFormatException badUserAmount) {
+                System.out.println("Please enter a valid number: £");
+            }
+        }
+        balance = balance + amount;
+        System.out.println("Deposit successful!");
+        System.out.println("Amount deposited: £" + amount);
+        System.out.println("New balance: £" + balance);
     }
 }
