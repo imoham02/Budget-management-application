@@ -36,8 +36,8 @@ public class Main {
                 }
             }
             switch (option) {
-                case 1 -> deposit(balance, scanner);
-                case 2 -> System.out.println();
+                case 1 -> balance = deposit(balance, scanner);
+                case 2 -> balance = withdraw(balance, scanner);
                 case 3 -> {
                     System.out.println("=== Account Balance ===");
                     System.out.println("Account Holder: " + name);
@@ -52,7 +52,7 @@ public class Main {
         }
         scanner.close();
     }
-    public static void deposit(double balance, Scanner scanner) {
+    public static double deposit(double balance, Scanner scanner) {
         System.out.println("Enter amount to deposit: £");
         boolean validAmount = false;
         double amount = 0.00;
@@ -62,15 +62,43 @@ public class Main {
                 if (amount < 0) {
                     System.out.println("Amount deposited cannot be negative! Please try again: £");
                 } else {
+                    balance += amount;
+                    System.out.println("Deposit successful!");
+                    System.out.println("Amount deposited: £" + amount);
+                    System.out.println("New balance: £" + balance);
                     validAmount = true;
                 }
             } catch (NumberFormatException badUserAmount) {
                 System.out.println("Please enter a valid number: £");
             }
         }
-        balance = balance + amount;
-        System.out.println("Deposit successful!");
-        System.out.println("Amount deposited: £" + amount);
-        System.out.println("New balance: £" + balance);
+        return balance;
+    }
+    public static double withdraw(double balance, Scanner scanner) {
+        System.out.println("Enter amount to withdraw: £");
+        boolean validAmount = false;
+        double amount = 0.00;
+        while (!validAmount) {
+            try {
+                amount = Double.parseDouble(scanner.nextLine());
+                if (amount < 0) {
+                    System.out.println("Amount withdrawn cannot be negative! Please try again: £");
+                } else if (amount > balance) {
+                    System.out.println("Insufficient funds!");
+                    System.out.println("Current Balance: £" + balance);
+                    System.out.println("Attempted Withdrawal: £" + amount);
+                    System.out.println("Enter a valid amount: £");
+                } else {
+                    balance -= amount;
+                    System.out.println("Withdrawal successful!");
+                    System.out.println("Amount withdrawn: £" + amount);
+                    System.out.println("New balance: £" + balance);
+                    validAmount = true;
+                }
+            } catch (NumberFormatException badUserAmount) {
+                System.out.println("Please enter a valid number: £");
+            }
+        }
+        return balance;
     }
 }
