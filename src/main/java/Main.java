@@ -36,7 +36,12 @@ public class Main {
                 }
             }
             switch (option) {
-                case 1, 2, 3 -> System.out.println();
+                case 1, 2 -> System.out.println();
+                case 3 -> {
+                    System.out.println("=== Account Balance ===");
+                    System.out.println("Account Holder: " + name);
+                    System.out.println("Current Balance: £" + String.format("%.2f", balance));
+                }
                 case 4 -> {
                     System.out.println("Thank you for using FinCore CLI Banking. Goodbye " + name + "!");
                     hasExited = true;
