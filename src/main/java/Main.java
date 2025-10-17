@@ -12,15 +12,14 @@ public class Main {
         boolean hasExited = false;
         while (!hasExited) {
             String bankTextBlock = """
-                    
-                    === Fincore CLI Banking Menu ===
+                    \n=== Fincore CLI Banking Menu ===
                     1. Deposit
                     2. Withdraw
                     3. Check Balance
                     4. Exit
                     """;
             System.out.println(bankTextBlock);
-            System.out.println("Please select an option (1-4):");
+            System.out.println("Please select an option (1-4): ");
             int option = 0;
             boolean validOption = false;
             while (!validOption) {
