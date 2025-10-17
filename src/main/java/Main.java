@@ -55,7 +55,7 @@ public class Main {
     public static double deposit(double balance, Scanner scanner) {
         System.out.println("Enter amount to deposit: £");
         boolean validAmount = false;
-        double amount = 0.00;
+        double amount;
         while (!validAmount) {
             try {
                 amount = Double.parseDouble(scanner.nextLine());
@@ -77,7 +77,7 @@ public class Main {
     public static double withdraw(double balance, Scanner scanner) {
         System.out.println("Enter amount to withdraw: £");
         boolean validAmount = false;
-        double amount = 0.00;
+        double amount;
         while (!validAmount) {
             try {
                 amount = Double.parseDouble(scanner.nextLine());
