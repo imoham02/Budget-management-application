@@ -1,5 +1,9 @@
 plugins {
-    id("java")
+    application
+}
+
+application {
+    mainClass = "com.fincore.budgetapp.Main"
 }
 
 group = "org.example"
@@ -17,4 +21,8 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+tasks.named<JavaExec>("run") {
+    standardInput = System.`in`
 }
