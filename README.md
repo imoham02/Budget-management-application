@@ -54,6 +54,7 @@ Fincore CLI is a Java-based Command Line Interface (CLI) application for budget 
                 - **util/** 
                     - `Console.java`
                     - `TransactionComparators.java`
+                - `Main.java`
     - **test/**
         - **java/**
             - **com.fincore.budgetapp/**
