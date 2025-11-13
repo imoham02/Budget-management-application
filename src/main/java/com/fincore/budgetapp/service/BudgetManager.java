@@ -1,9 +1,13 @@
 package com.fincore.budgetapp.service;
 
 import com.fincore.budgetapp.model.BudgetEntry;
+import com.fincore.budgetapp.model.Transaction;
+import com.fincore.budgetapp.util.Console;
+import com.fincore.budgetapp.util.TransactionComparators;
 import com.fincore.budgetapp.model.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BudgetManager implements IBudgetManager {
     private ArrayList<BudgetEntry> budgetAccounts;
@@ -42,22 +46,59 @@ public class BudgetManager implements IBudgetManager {
         System.out.println("Account Holder: " + currentAccount.getUser().name());
         System.out.println("Current Balance: £" + String.format("%.2f", currentAccount.getBalance()));
         boolean viewTransactions = Console.readYesNo("Would you like to see transaction history?");
-        if (viewTransactions) listTransactions();
+        if (viewTransactions) {
+            String bankTextBlock = """
+                    1. View all transactions
+                    2. View all deposits
+                    3. View all withdrawals
+                    Please select an option (1-3):""";
+            System.out.println(bankTextBlock);
+
+            int option = Console.readInt(1, 3);
+            switch (option) {
+                case 1 -> listTransactions(currentAccount.getTransactions());
+                case 2,3 -> filterTransactions(option);
+            }
+        };
     }
 
-    public void listTransactions() {
+    public void listTransactions(List<Transaction> transactionList) {
         System.out.println("Transaction history for " + currentAccount.getUser().name());
-        ArrayList<Double> transactions = currentAccount.getTransactions();
-        for (double transaction : transactions) {
-            if (transaction < 0) {
-                System.out.printf("Withdrawn: £%.2f", -transaction);
-                System.out.println();
-            } else {
-                System.out.printf("Deposited: £%.2f", transaction);
-                System.out.println();
-            }
+        for (Transaction transaction : transactionList) {
+            System.out.printf("%s | £%.2f | %s %n", transaction.getType().toUpperCase(), transaction.getAmount(), transaction.getDateTime());
         }
+        boolean sortTransactionsList = Console.readYesNo("Would you like to see transaction history sorted by date/time or amount?");
+        if (sortTransactionsList) sortTransactions(transactionList);
     }
+
+    public void filterTransactions(int option) {
+        String type = (option == 2) ? "DEPOSIT" : "WITHDRAW";
+        System.out.println(type + " history for " + currentAccount.getUser().name());
+        List<Transaction> transactions = currentAccount.getTransactions().stream().filter(transaction -> transaction.getType().equals(type)).toList();
+        listTransactions(transactions);
+    }
+
+    public void sortTransactions(List<Transaction> transactionList) {
+        List<Transaction> transactions = new ArrayList<>(transactionList);
+        String bankTextBlock = """
+                    1. Date/Time (ASC)
+                    2. Date/Time (DESC)
+                    3. Amount (ASC)
+                    4. Amount (DESC)
+                    Please select an option (1-4):""";
+        System.out.println(bankTextBlock);
+
+        int option = Console.readInt(1, 4);
+        switch (option) {
+            case 1 -> transactions.sort(TransactionComparators.byDateTime(true));
+            case 2 -> transactions.sort(TransactionComparators.byDateTime(false));
+            case 3 -> transactions.sort(TransactionComparators.byAmount(true));
+            case 4 -> transactions.sort(TransactionComparators.byAmount(false));
+        }
+        listTransactions(transactions);
+    }
+
+
 
     public void loginToBudgetAccount (String name) {
         BudgetEntry account = findBudgetAccount(name);

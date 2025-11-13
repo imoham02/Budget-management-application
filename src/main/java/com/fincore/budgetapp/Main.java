@@ -1,7 +1,7 @@
 package com.fincore.budgetapp;
 
 import com.fincore.budgetapp.service.BudgetManager;
-import com.fincore.budgetapp.service.Console;
+import com.fincore.budgetapp.util.Console;
 
 public class Main {
     public static void main(String[] args) {

@@ -1,11 +1,12 @@
 package com.fincore.budgetapp.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BudgetEntry {
     private User user;
     private double balance;
-    private ArrayList<Double> transactions;
+    private List<Transaction> transactions;
 
     public BudgetEntry(User user) {
         this.user = user;
@@ -21,30 +22,31 @@ public class BudgetEntry {
         return balance;
     }
 
-    public ArrayList<Double> getTransactions() {
+    public List<Transaction> getTransactions() {
         return transactions;
     }
 
-    public void addTransaction (double transaction) {
+    public void addTransaction (String type, double amount) {
+        Transaction transaction = new Transaction(type, amount);
         transactions.addFirst(transaction);
     }
 
     public void deposit(double amount) {
-        if (amount < 0) {
-            throw new IllegalArgumentException("Amount deposited cannot be negative");
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount deposited has to be a positive number");
         }
         balance += amount;
-        addTransaction(amount);
+        addTransaction("DEPOSIT", amount);
     }
 
     public void withdraw(double amount) {
-        if (amount < 0) {
-            throw new IllegalArgumentException("Amount withdrawn cannot be negative");
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount withdrawn has to be a positive number");
         }
         if (amount > balance) {
             throw new IllegalArgumentException("Insufficient funds");
         }
         balance -= amount;
-        addTransaction(-amount);
+        addTransaction("WITHDRAW", amount);
     }
 }

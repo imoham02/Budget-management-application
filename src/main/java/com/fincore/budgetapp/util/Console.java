@@ -1,4 +1,4 @@
-package com.fincore.budgetapp.service;
+package com.fincore.budgetapp.util;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -32,14 +32,14 @@ public class Console {
             try {
                 int input = scanner.nextInt();
                 if (input >= min && input <= max) {
-                    scanner.nextLine(); // clear leftover newline
+                    scanner.nextLine();
                     return input;
                 } else {
                     System.out.printf("Invalid choice! Pick option (%d–%d)%n", min, max);
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Enter a valid number");
-                scanner.nextLine(); // clear invalid input
+                scanner.nextLine();
             }
         }
     }
